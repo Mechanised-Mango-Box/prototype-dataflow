@@ -1,55 +1,16 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Node from "./components/Node.vue"
 </script>
 
-<style scoped>
-</style>
 
 
 <template>
-  <header>Dataflow Prototype - Visual Editor</header>
+  <h1>Dataflow Prototype - Visual Editor</h1>
 
   <main>
-    <div>
-      <table>
-        <caption>
-          Node Name
-        </caption>
-        <thead>
-          <tr>
-            <th>In Pin</th>
-            <th>In Name</th>
-            <th>Gap</th>
-            <th>Out Name</th>
-            <th>Out Pin</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><button>*</button></td>
-            <td>A</td>
-            <td></td>
-            <td>X</td>
-            <td><button>*</button></td>
-          </tr>
-          <tr>
-            <td><button>*</button></td>
-            <td>B</td>
-            <td></td>
-            <td>Y</td>
-            <td><button>*</button></td>
-          </tr>
-          <tr>
-            <td><button>*</button></td>
-            <td>C</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-
-    </div>
+    <Node title="Node Name" :inputs="['A', 'B', 'C']" :outputs="['X', 'Y']" :valid="false" :x="200" :y="100" />
+    <Node title="Node Name" :inputs="['A', 'B', 'C']" :outputs="['X', 'Y']" :valid="false" :x="500" :y="700" />
+    <Node title="Node Name" :inputs="['A', 'B', 'C']" :outputs="['X', 'Y']" :valid="false" :x="700" :y="1000" />
+    <Node title="Node Name" :inputs="['A', 'B', 'C']" :outputs="['X', 'Y']" :valid="false" :x="1000" :y="1500" />
   </main>
 </template>
