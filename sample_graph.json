@@ -1,0 +1,46 @@
+{
+    "nodes": {
+        "node_1": {
+            "tag": "literal",
+            "position": "(100,200)",
+            "config": {
+                "value": "True"
+            }
+        },
+        "node_2": {
+            "tag": "literal",
+            "position": "(1000,200)",
+            "config": {
+                "value": "False"
+            }
+        },
+        "node_3": {
+            "tag": "logical_or",
+            "position": "(600,700)"
+        },
+        "node_4": {
+            "tag": "print",
+            "position": "(1200,300)"
+        }
+    },
+    "edges": {
+        "edge_1": {
+            "source": "node_1",
+            "sinks": [
+                "node_3"
+            ]
+        },
+        "edge_2": {
+            "source": "node_2",
+            "sinks": [
+                "node_3"
+            ]
+        },
+        "edge_3": {
+            "source": "node_3",
+            "sinks": [
+                "node_4"
+            ]
+        }
+    }
+}
