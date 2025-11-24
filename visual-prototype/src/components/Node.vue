@@ -1,18 +1,15 @@
 <template>
-    <div 
-        class="node" 
-        :style="{ top: y + 'px', left: x + 'px', position: 'absolute' }"
-    >
+    <div class="node" :style="{ top: y + 'px', left: x + 'px', position: 'absolute' }">
         <header>{{ title }}</header>
         <div class="node-body">
             <div class="input">
-                <p v-for="(inp, i) in inputs" :key="i">{{ inp }}</p>
+                <button v-for="(inp, i) in inputs" :key="i">{{ inp }}</button>
             </div>
             <div class="output">
-                <p v-for="(out, i) in outputs" :key="i">{{ out }}</p>
+                <button v-for="(out, i) in outputs" :key="i">{{ out }}</button>
             </div>
         </div>
-        <footer>Valid: {{ valid ? 'YES' : 'NO' }}</footer>
+        <footer>ID: {{ id }}</footer>
     </div>
 </template>
 
@@ -21,7 +18,7 @@ defineProps<{
     title: string
     inputs: string[]
     outputs: string[]
-    valid: boolean
+    id: string
     x: number
     y: number
 }>()

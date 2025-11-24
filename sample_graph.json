@@ -4,14 +4,14 @@
             "tag": "literal",
             "position": "(100,200)",
             "config": {
-                "value": "True"
+                "value": "False"
             }
         },
         "node_2": {
             "tag": "literal",
             "position": "(1000,200)",
             "config": {
-                "value": "False"
+                "value": "True"
             }
         },
         "node_3": {
@@ -19,27 +19,38 @@
             "position": "(600,700)"
         },
         "node_4": {
+            "tag": "logical_and",
+            "position": "(600,700)"
+        },
+        "node_5": {
             "tag": "print",
             "position": "(1200,300)"
         }
     },
     "edges": {
         "edge_1": {
-            "source": "node_1",
+            "source": "node_1.value",
             "sinks": [
-                "node_3"
+                "node_3.a"
             ]
         },
         "edge_2": {
-            "source": "node_2",
+            "source": "node_2.value",
             "sinks": [
-                "node_3"
+                "node_3.b",
+                "node_4.b"
             ]
         },
         "edge_3": {
             "source": "node_3",
             "sinks": [
-                "node_4"
+                "node_4.a"
+            ]
+        },
+        "edge_4": {
+            "source": "node_4",
+            "sinks": [
+                "node_5.in"
             ]
         }
     }
