@@ -3,45 +3,53 @@ import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 </script>
 
-<template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+<style scoped>
+</style>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
+
+<template>
+  <header>Dataflow Prototype - Visual Editor</header>
 
   <main>
-    <TheWelcome />
+    <div>
+      <table>
+        <caption>
+          Node Name
+        </caption>
+        <thead>
+          <tr>
+            <th>In Pin</th>
+            <th>In Name</th>
+            <th>Gap</th>
+            <th>Out Name</th>
+            <th>Out Pin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><button>*</button></td>
+            <td>A</td>
+            <td></td>
+            <td>X</td>
+            <td><button>*</button></td>
+          </tr>
+          <tr>
+            <td><button>*</button></td>
+            <td>B</td>
+            <td></td>
+            <td>Y</td>
+            <td><button>*</button></td>
+          </tr>
+          <tr>
+            <td><button>*</button></td>
+            <td>C</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
   </main>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
