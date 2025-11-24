@@ -1,10 +1,10 @@
 # Prototype: Dataflow
-Functional-ish visual scripting for in-game agent automation based on visual shader-graphs
+A functional-ish visual scripting for in-game agent automation based on visual shader-graphs
 
 ## Python Prototype ⭕
 - Testing concept
 
-## JS Prototype ❌
+## Visual Prototype ❌
 - Add JSON save/load ❌
 - Visual editor ❌
 
