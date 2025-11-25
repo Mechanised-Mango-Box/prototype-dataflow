@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Godot;
 
 public partial class Editor : Node
@@ -17,20 +18,21 @@ public partial class Editor : Node
 		NodeData n4 = new(Guid.NewGuid(), NodeType.LOGICAL_AND, Vector2.Zero); board.Nodes.Add(n4.Id, n4);
 		NodeData n5 = new(Guid.NewGuid(), NodeType.PRINT, Vector2.Zero); board.Nodes.Add(n5.Id, n5);
 
-		Edge e1 = new(new(n1.Id, "value"), [new(n3.Id, "a")]); board.Edges.Add(e1.Source, e1);
-		Edge e2 = new(new(n2.Id, "value"), [new(n3.Id, "b"), new(n4.Id, "b")]); board.Edges.Add(e2.Source, e2);
-		Edge e3 = new(new(n3.Id, "value"), [new(n4.Id, "a")]); board.Edges.Add(e3.Source, e3);
-		Edge e4 = new(new(n5.Id, "value"), [new(n5.Id, "in")]); board.Edges.Add(e4.Source, e4);
+		Edge e1 = new(new(n1.Id, "data"), [new(n3.Id, "in_a")]); board.Edges.Add(e1.Source, e1);
+		Edge e2 = new(new(n2.Id, "data"), [new(n3.Id, "in_b"), new(n4.Id, "in_b")]); board.Edges.Add(e2.Source, e2);
+		Edge e3 = new(new(n3.Id, "out"), [new(n4.Id, "in_a")]); board.Edges.Add(e3.Source, e3);
+		Edge e4 = new(new(n4.Id, "out"), [new(n5.Id, "input")]); board.Edges.Add(e4.Source, e4);
 		#endregion
 
 		#region Generate Graph
 		foreach (var node in board.Nodes.Values)
 		{
-			GraphNode gn = new();
-			graphEdit.AddChild(gn);
+			GraphNode graphNode = new();
+			graphNode.Name = node.Id.ToString();
+			graphEdit.AddChild(graphNode);
 
 			/// TODO new GraphNodePlus(title, leftPins, rightPins);
-			gn.Title = node.Id.ToString();
+			graphNode.Title = node.Tag.ToString(); // TODO name lookup
 
 			ImmutableArray<PinConfig> argPins = node.GetArgPins();
 			ImmutableArray<PinConfig> resultPins = node.GetResultPins();
@@ -38,14 +40,14 @@ public partial class Editor : Node
 			for (int i = 0; i < maxPinsCount; i++)
 			{
 				MarginContainer marginContainer = new();
-				gn.AddChild(marginContainer);
+				graphNode.AddChild(marginContainer);
 				if (i < argPins.Length)
 				{
 					Label labelLeft = new();
 					labelLeft.HorizontalAlignment = HorizontalAlignment.Left;
 					labelLeft.Text = argPins[i].PinLabel;
 					marginContainer.AddChild(labelLeft);
-					gn.SetSlotEnabledLeft(i, true);
+					graphNode.SetSlotEnabledLeft(i, true);
 				}
 
 				if (i < resultPins.Length)
@@ -54,10 +56,23 @@ public partial class Editor : Node
 					labelRight.HorizontalAlignment = HorizontalAlignment.Right;
 					labelRight.Text = resultPins[i].PinLabel;
 					marginContainer.AddChild(labelRight);
-					gn.SetSlotEnabledRight(i, true);
+					graphNode.SetSlotEnabledRight(i, true);
 				}
 			}
+		}
 
+		foreach (var edge in board.Edges.Values)
+		{
+			var sourcePin = edge.Source;
+			foreach (var sinkPin in edge.Sinks)
+			{
+				graphEdit.ConnectNode(
+					sourcePin.OwnerId.ToString(),
+					board.Nodes[sourcePin.OwnerId].GetResultPins().Select((pinConfig, index) => new { pinConfig, index }).FirstOrDefault(x => x.pinConfig.PinLabel == sourcePin.PinLabel)?.index ?? -1,
+					sinkPin.OwnerId.ToString(),
+					board.Nodes[sinkPin.OwnerId].GetArgPins().Select((pinConfig, index) => new { pinConfig, index }).FirstOrDefault(x => x.pinConfig.PinLabel == sinkPin.PinLabel)?.index ?? -1
+				);
+			}
 		}
 		#endregion
 	}
