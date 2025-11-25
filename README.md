@@ -5,8 +5,12 @@ A functional-ish visual scripting for in-game agent automation based on visual s
 - Testing concept
 
 ## Visual Prototype ❌
-- Add JSON save/load ❌
 - Visual editor ❌
+    - Data to visuals ⭕
+    - Modify state ❌
+- File ❌
+    - Load from file ❌
+    - Write to file ❌
 
 ## FAQ
 > Why not use X?
