@@ -4,32 +4,32 @@ using System.Collections.Immutable;
 
 public readonly record struct NodeData(Guid Id, NodeType Tag, Vector2 Position)
 {
-	public ImmutableArray<PinAddress> GetArgPins() => Tag switch
+	public ImmutableArray<PinConfig> GetArgPins() => Tag switch
 	{
-		NodeType.PRINT => [new PinId(Id, "input", VariableType.STRING)],
+		NodeType.PRINT => [new PinConfig("input", VariableType.STRING)],
 
-		NodeType.CONSTANT => ImmutableArray<PinAddress>.Empty,
+		NodeType.CONSTANT => ImmutableArray<PinConfig>.Empty,
 
 		NodeType.LOGICAL_AND => [
-				new PinId(Id, "in_a", VariableType.BOOL),
-				new PinId(Id, "in_b", VariableType.BOOL)
+				new PinConfig( "in_a", VariableType.BOOL),
+				new PinConfig( "in_b", VariableType.BOOL)
 			   ],
 
 		NodeType.LOGICAL_OR => [
-			new PinId(Id, "in_a", VariableType.BOOL),
-			new PinId(Id, "in_b", VariableType.BOOL)
+			new PinConfig( "in_a", VariableType.BOOL),
+			new PinConfig( "in_b", VariableType.BOOL)
 		   ],
 	};
 
-	public ImmutableArray<PinAddress> GetResultPins() => Tag switch
+	public ImmutableArray<PinConfig> GetResultPins() => Tag switch
 	{
-		NodeType.PRINT => ImmutableArray<PinAddress>.Empty,
+		NodeType.PRINT => ImmutableArray<PinConfig>.Empty,
 
-		NodeType.CONSTANT => [new PinId(Id, "data", VariableType.BOOL)],
+		NodeType.CONSTANT => [new PinConfig("data", VariableType.BOOL)],
 
-		NodeType.LOGICAL_AND => [new PinId(Id, "out", VariableType.BOOL)],
+		NodeType.LOGICAL_AND => [new PinConfig("out", VariableType.BOOL)],
 
-		NodeType.LOGICAL_OR => [new PinId(Id, "out", VariableType.BOOL)],
+		NodeType.LOGICAL_OR => [new PinConfig("out", VariableType.BOOL)],
 	};
 
 	public void GenerateResults()
