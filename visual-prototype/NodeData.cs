@@ -1,12 +1,13 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
-public readonly record struct NodeData(Guid Id, NodeType Tag, Vector2 Position)
+public readonly record struct FunctionNode(Guid Id, NodeType Tag, Vector2 Position)
 {
 	public ImmutableArray<PinConfig> GetArgPins() => Tag switch
 	{
-		NodeType.PRINT => [new PinConfig("input", VariableType.STRING)],
+		NodeType.PRINT => [new PinConfig("input", VariableType.ANY)],
 
 		NodeType.CONSTANT => ImmutableArray<PinConfig>.Empty,
 
@@ -25,15 +26,25 @@ public readonly record struct NodeData(Guid Id, NodeType Tag, Vector2 Position)
 	{
 		NodeType.PRINT => ImmutableArray<PinConfig>.Empty,
 
-		NodeType.CONSTANT => [new PinConfig("data", VariableType.BOOL)],
+		NodeType.VAR_READ => [new PinConfig("data", VariableType.BOOL)],
+		NodeType.VAR_WRITE => ImmutableArray<PinConfig>.Empty,
 
 		NodeType.LOGICAL_AND => [new PinConfig("out", VariableType.BOOL)],
 
 		NodeType.LOGICAL_OR => [new PinConfig("out", VariableType.BOOL)],
 	};
 
-	public void GenerateResults()
+	public void GenerateResults(Board board, Dictionary<string, RefVar> userVariableTable)
 	{
+		switch (Tag)
+		{
+			case NodeType.PRINT:
+				{
+					
+				}
+
+			_: throw new Exception();
+		}
 		GD.Print($"GENERATE RESULTS FOR: {this}"); // TODO PLACEHOLDER
 												   // Pattern match on type -> return node's result}
 	}

@@ -10,9 +10,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wlowb")
-graphEdit = NodePath("GraphEdit")
+graphEdit = NodePath("HSplitContainer/Dataflow Graph")
 
-[node name="GraphEdit" type="GraphEdit" parent="."]
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,78 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="GraphNode" type="GraphNode" parent="GraphEdit"]
+[node name="User Variable List" type="VBoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HSplitContainer/User Variable List"]
+layout_mode = 2
+text = "User Variables:"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/User Variable List"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="HSplitContainer/User Variable List"]
+layout_mode = 2
+size_flags_vertical = 0
+columns = 3
+
+[node name="Variable Name" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR NAME"
+
+[node name="Variable Type" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR TYPE"
+
+[node name="Value" type="LineEdit" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Variable Name2" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR NAME"
+
+[node name="Variable Type2" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR TYPE"
+
+[node name="Value2" type="LineEdit" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Variable Name3" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR NAME"
+
+[node name="Variable Type3" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR TYPE"
+
+[node name="Value3" type="LineEdit" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Variable Name4" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR NAME"
+
+[node name="Variable Type4" type="Label" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+text = "VAR TYPE"
+
+[node name="Value4" type="LineEdit" parent="HSplitContainer/User Variable List/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Dataflow Graph" type="GraphEdit" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="GraphNode" type="GraphNode" parent="HSplitContainer/Dataflow Graph"]
 visible = false
 layout_mode = 0
 offset_left = 367.0
@@ -39,14 +110,14 @@ slot/0/right_color = Color(1, 1, 1, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
 
-[node name="GraphNodeRow" type="MarginContainer" parent="GraphEdit/GraphNode"]
+[node name="GraphNodeRow" type="MarginContainer" parent="HSplitContainer/Dataflow Graph/GraphNode"]
 layout_mode = 2
 
-[node name="LeftLabel" type="Label" parent="GraphEdit/GraphNode/GraphNodeRow"]
+[node name="LeftLabel" type="Label" parent="HSplitContainer/Dataflow Graph/GraphNode/GraphNodeRow"]
 layout_mode = 2
 text = "LEFT"
 
-[node name="RightLabel" type="Label" parent="GraphEdit/GraphNode/GraphNodeRow"]
+[node name="RightLabel" type="Label" parent="HSplitContainer/Dataflow Graph/GraphNode/GraphNodeRow"]
 layout_mode = 2
 text = "RIGHT"
 horizontal_alignment = 2

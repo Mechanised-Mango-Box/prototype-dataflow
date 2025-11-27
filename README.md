@@ -30,6 +30,9 @@ A functional-ish visual scripting for in-game agent automation based on visual s
     - Data structures:
         - Matrix ❌
         - Vector ❌
+    - Misc Types:
+        - Any
+        - None
 
 ## FAQ
 > Why not use X?

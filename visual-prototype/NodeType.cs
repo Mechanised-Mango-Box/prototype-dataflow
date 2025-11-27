@@ -1,7 +1,8 @@
 public enum NodeType
 {
     PRINT,
-    CONSTANT,
+    VAR_READ,
+    VAR_WRITE,
     LOGICAL_AND,
     LOGICAL_OR
 }

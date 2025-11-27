@@ -5,14 +5,14 @@ using System.Linq;
 
 public class Board
 {
-	public readonly Dictionary<Guid, NodeData> Nodes = new();  /// <NodeId, Node>
+	public readonly Dictionary<Guid, FunctionNode> Nodes = new();  /// <NodeId, Node>
 	public readonly Dictionary<PinAddress, Edge> Edges = new();  /// <Pin, Edge>
 	public readonly Dictionary<string, object> UserVariables = new();
 	// special_variables: /// this should be things like player position
 
 	public void Propagate()
 	{
-		List<NodeData> frontier = [];
+		List<FunctionNode> frontier = [];
 
 		/// Add all nodes with no dependencies to frontier
 		foreach (var node in Nodes.Values)
@@ -42,7 +42,7 @@ public class Board
 			}
 		}
 	}
-	public bool IsDependenciesFulfilled(NodeData node)
+	public bool IsDependenciesFulfilled(FunctionNode node)
 	{
 		/// All args have been connected and have results
 		ImmutableArray<PinConfig> inputPins = node.GetArgPins();

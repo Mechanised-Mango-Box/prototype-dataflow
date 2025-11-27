@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Godot;
@@ -6,17 +7,19 @@ using Godot;
 public partial class Editor : Node
 {
 	[Export] public GraphEdit graphEdit;
-	Board board = new();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Board board = new();
+		Dictionary<string, RefVar> userVariableTable = new();
+
 		#region Generate board (replace with load from json later)
-		NodeData n1 = new(Guid.NewGuid(), NodeType.CONSTANT, Vector2.Zero); board.Nodes.Add(n1.Id, n1);
-		NodeData n2 = new(Guid.NewGuid(), NodeType.CONSTANT, Vector2.Zero); board.Nodes.Add(n2.Id, n2);
-		NodeData n3 = new(Guid.NewGuid(), NodeType.LOGICAL_OR, Vector2.Zero); board.Nodes.Add(n3.Id, n3);
-		NodeData n4 = new(Guid.NewGuid(), NodeType.LOGICAL_AND, Vector2.Zero); board.Nodes.Add(n4.Id, n4);
-		NodeData n5 = new(Guid.NewGuid(), NodeType.PRINT, Vector2.Zero); board.Nodes.Add(n5.Id, n5);
+		FunctionNode n1 = new(Guid.NewGuid(), NodeType.CONSTANT, Vector2.Zero); board.Nodes.Add(n1.Id, n1);
+		FunctionNode n2 = new(Guid.NewGuid(), NodeType.CONSTANT, Vector2.Zero); board.Nodes.Add(n2.Id, n2);
+		FunctionNode n3 = new(Guid.NewGuid(), NodeType.LOGICAL_OR, Vector2.Zero); board.Nodes.Add(n3.Id, n3);
+		FunctionNode n4 = new(Guid.NewGuid(), NodeType.LOGICAL_AND, Vector2.Zero); board.Nodes.Add(n4.Id, n4);
+		FunctionNode n5 = new(Guid.NewGuid(), NodeType.PRINT, Vector2.Zero); board.Nodes.Add(n5.Id, n5);
 
 		Edge e1 = new(new(n1.Id, "data"), [new(n3.Id, "in_a")]); board.Edges.Add(e1.Source, e1);
 		Edge e2 = new(new(n2.Id, "data"), [new(n3.Id, "in_b"), new(n4.Id, "in_b")]); board.Edges.Add(e2.Source, e2);
@@ -68,9 +71,13 @@ public partial class Editor : Node
 			{
 				graphEdit.ConnectNode(
 					sourcePin.OwnerId.ToString(),
-					board.Nodes[sourcePin.OwnerId].GetResultPins().Select((pinConfig, index) => new { pinConfig, index }).FirstOrDefault(x => x.pinConfig.PinLabel == sourcePin.PinLabel)?.index ?? -1,
+					board.Nodes[sourcePin.OwnerId].GetResultPins()
+						.Select((pinConfig, index) => new { pinConfig, index })
+						.FirstOrDefault(x => x.pinConfig.PinLabel == sourcePin.PinLabel)?.index ?? -1,
 					sinkPin.OwnerId.ToString(),
-					board.Nodes[sinkPin.OwnerId].GetArgPins().Select((pinConfig, index) => new { pinConfig, index }).FirstOrDefault(x => x.pinConfig.PinLabel == sinkPin.PinLabel)?.index ?? -1
+					board.Nodes[sinkPin.OwnerId].GetArgPins()
+						.Select((pinConfig, index) => new { pinConfig, index })
+						.FirstOrDefault(x => x.pinConfig.PinLabel == sinkPin.PinLabel)?.index ?? -1
 				);
 			}
 		}

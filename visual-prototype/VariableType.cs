@@ -1,6 +1,8 @@
 public enum VariableType
 {
 	NONE,
+	ANY,
 	BOOL,
-	STRING
+	INT,
+	DECIMAL
 }
