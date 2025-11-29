@@ -1,8 +1,8 @@
-public enum NodeType
+public enum OpCode
 {
     PRINT,
     VAR_READ,
     VAR_WRITE,
-    LOGICAL_AND,
-    LOGICAL_OR
+    PRODUCT,
+    SUM
 }

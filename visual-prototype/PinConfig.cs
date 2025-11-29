@@ -1,3 +1,3 @@
 using System;
 
-public readonly record struct PinConfig(string PinLabel, VariableType VariableType);
+public readonly record struct PinConfig<T>(string PinLabel) where T : VariableAny;

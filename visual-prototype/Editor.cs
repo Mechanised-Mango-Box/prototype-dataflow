@@ -11,24 +11,23 @@ public partial class Editor : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Board board = new();
-		Dictionary<string, RefVar> userVariableTable = new();
+		DataFlowMachine dfm = new();
 
 		#region Generate board (replace with load from json later)
-		FunctionNode n1 = new(Guid.NewGuid(), NodeType.CONSTANT, Vector2.Zero); board.Nodes.Add(n1.Id, n1);
-		FunctionNode n2 = new(Guid.NewGuid(), NodeType.CONSTANT, Vector2.Zero); board.Nodes.Add(n2.Id, n2);
-		FunctionNode n3 = new(Guid.NewGuid(), NodeType.LOGICAL_OR, Vector2.Zero); board.Nodes.Add(n3.Id, n3);
-		FunctionNode n4 = new(Guid.NewGuid(), NodeType.LOGICAL_AND, Vector2.Zero); board.Nodes.Add(n4.Id, n4);
-		FunctionNode n5 = new(Guid.NewGuid(), NodeType.PRINT, Vector2.Zero); board.Nodes.Add(n5.Id, n5);
+		BaseNode n1 = new(Guid.NewGuid(), OpCode.CONSTANT, Vector2.Zero); dfm.Board.Nodes.Add(n1.Id, n1);
+		BaseNode n2 = new(Guid.NewGuid(), OpCode.CONSTANT, Vector2.Zero); dfm.Board.Nodes.Add(n2.Id, n2);
+		BaseNode n3 = new(Guid.NewGuid(), OpCode.SUM, Vector2.Zero); dfm.Board.Nodes.Add(n3.Id, n3);
+		BaseNode n4 = new(Guid.NewGuid(), OpCode.PRODUCT, Vector2.Zero); dfm.Board.Nodes.Add(n4.Id, n4);
+		BaseNode n5 = new(Guid.NewGuid(), OpCode.PRINT, Vector2.Zero); dfm.Board.Nodes.Add(n5.Id, n5);
 
-		Edge e1 = new(new(n1.Id, "data"), [new(n3.Id, "in_a")]); board.Edges.Add(e1.Source, e1);
-		Edge e2 = new(new(n2.Id, "data"), [new(n3.Id, "in_b"), new(n4.Id, "in_b")]); board.Edges.Add(e2.Source, e2);
-		Edge e3 = new(new(n3.Id, "out"), [new(n4.Id, "in_a")]); board.Edges.Add(e3.Source, e3);
-		Edge e4 = new(new(n4.Id, "out"), [new(n5.Id, "input")]); board.Edges.Add(e4.Source, e4);
+		Edge e1 = new(new(n1.Id, "data"), [new(n3.Id, "in_a")]); dfm.Board.Edges.Add(e1.Source, e1);
+		Edge e2 = new(new(n2.Id, "data"), [new(n3.Id, "in_b"), new(n4.Id, "in_b")]); dfm.Board.Edges.Add(e2.Source, e2);
+		Edge e3 = new(new(n3.Id, "out"), [new(n4.Id, "in_a")]); dfm.Board.Edges.Add(e3.Source, e3);
+		Edge e4 = new(new(n4.Id, "out"), [new(n5.Id, "input")]); dfm.Board.Edges.Add(e4.Source, e4);
 		#endregion
 
 		#region Generate Graph
-		foreach (var node in board.Nodes.Values)
+		foreach (var node in dfm.Board.Nodes.Values)
 		{
 			GraphNode graphNode = new();
 			graphNode.Name = node.Id.ToString();
@@ -64,18 +63,18 @@ public partial class Editor : Node
 			}
 		}
 
-		foreach (var edge in board.Edges.Values)
+		foreach (var edge in dfm.Board.Edges.Values)
 		{
 			var sourcePin = edge.Source;
 			foreach (var sinkPin in edge.Sinks)
 			{
 				graphEdit.ConnectNode(
 					sourcePin.OwnerId.ToString(),
-					board.Nodes[sourcePin.OwnerId].GetResultPins()
+					dfm.Board.Nodes[sourcePin.OwnerId].GetResultPins()
 						.Select((pinConfig, index) => new { pinConfig, index })
 						.FirstOrDefault(x => x.pinConfig.PinLabel == sourcePin.PinLabel)?.index ?? -1,
 					sinkPin.OwnerId.ToString(),
-					board.Nodes[sinkPin.OwnerId].GetArgPins()
+					dfm.Board.Nodes[sinkPin.OwnerId].GetArgPins()
 						.Select((pinConfig, index) => new { pinConfig, index })
 						.FirstOrDefault(x => x.pinConfig.PinLabel == sinkPin.PinLabel)?.index ?? -1
 				);

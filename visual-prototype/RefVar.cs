@@ -1,1 +1,0 @@
-public record struct RefVar(VariableType Type, object value);
