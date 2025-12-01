@@ -1,5 +1,5 @@
-from typing import Dict, List
-from var import Matrix, Scalar, Word
+from typing import Callable, Dict, List
+from data import Container, Matrix, Scalar, Word
 
 
 class Instruction:
@@ -7,10 +7,11 @@ class Instruction:
         raise NotImplementedError()
 
 
-class Add(Instruction):
+class TriArgFn(Instruction):
     label_dest: str
     label_s1: str
     label_s2: str
+    fn: Callable[[Word, Word], Word]
 
     def execute(self, vm: VirtualMachine) -> None:
         dest = vm.data[self.label_dest]
@@ -26,13 +27,19 @@ class Add(Instruction):
                 dest.value = s1.value + s2.value
 
             case Matrix(), Matrix(), Scalar() if dest.size_cols() == s1.size_cols() and dest.size_rows() == s1.size_rows():
-                for i in range(dest.size_cols()):
-                    for j in range(dest.size_rows()):
-                        dest[i, j] = s1[i, j] + s2
+                for i, j in dest.walk():
+                    dest[i, j] = self.fn(s1[i, j], s2.value)
+
+            case Matrix(), Scalar(), Matrix() if dest.size_cols() == s2.size_cols() and dest.size_rows() == s2.size_rows():
+                for i, j in dest.walk():
+                    dest[i, j] = self.fn(s1.value, s2[i, j])
+
             case Matrix(), Matrix(), Matrix() if dest.size_cols() == s1.size_cols() == s2.size_cols() and dest.size_rows() == s1.size_rows() == s2.size_rows():
-                for i in range(dest.size_cols()):
-                    for j in range(dest.size_rows()):
-                        dest[i, j] = s1[i, j] + s2[i, j]
+                for i, j in dest.walk():
+                    dest[i, j] = self.fn(s1[i, j], s2[i, j])
+
+            case _:
+                raise ValueError("Invalid args")
 
 
 class VirtualMachine:
@@ -47,7 +54,7 @@ class VirtualMachine:
     """Interrupt Return Address (Optional)"""
 
     # Segments
-    data: Dict[str, Word]
+    data: Dict[str, Container]
     instructions: List[Instruction]
 
     def step(self):
